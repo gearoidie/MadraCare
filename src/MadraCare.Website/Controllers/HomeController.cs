@@ -5,13 +5,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MadraCare.Website.Models;
+using MadraCare.Website.Clients;
 
 namespace MadraCare.Website.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IMadraApiClient _madraApiClient;
+
+        public HomeController(IMadraApiClient madraApiClient)
         {
+            _madraApiClient = madraApiClient;
+        }
+        public async Task<IActionResult> Index()
+        {
+            ViewData["Message"] = await _madraApiClient.GetValues();
             return View();
         }
 
