@@ -19,4 +19,4 @@ FROM microsoft/dotnet:2.1.4-runtime-alpine AS runtime
 ENV DOTNET_USE_POLLING_FILE_WATCHER=true
 WORKDIR /app
 COPY --from=publish /app/out ./
-ENTRYPOINT ["dotnet", "MadraCare.Services.Api.dll"]
+ENTRYPOINT ["dotnet", "MadraCare.Services.Kennel.dll"]

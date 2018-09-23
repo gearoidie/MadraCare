@@ -8,13 +8,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace MadraCare.Services.Api
+namespace MadraCare.Services.Kennel
 {
     public class Startup
     {
@@ -28,9 +29,11 @@ namespace MadraCare.Services.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+ 
+            //Swagger
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "Kennel API", Version = "v1" });
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -52,6 +55,8 @@ namespace MadraCare.Services.Api
             }
 
             app.UseHttpsRedirection();
+            app.UseMvc();
+            
             app.UseSwagger();
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
             // specifying the Swagger JSON endpoint.
@@ -60,8 +65,6 @@ namespace MadraCare.Services.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Modra API V1");
                 
             });
-
-            app.UseMvc();
         }
     }
 }

@@ -1,10 +1,14 @@
 version: "3"
 services:
-    api:
-        build: ./src/MadraCare.Services/MadraCare.Services.Api
+    services.kennel:
+        build: ./src/MadraCare.Services/MadraCare.Services.Kennel
+    services.gateway:
+        build: ./src/MadraCare.Services/MadraCare.Services.Gateway
+        depends_on:
+            - services.kennel
     web:
         build: ./src/MadraCare.Website
         ports:
             - "8000:80"
         depends_on:
-            - api
+            - services.gateway

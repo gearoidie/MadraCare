@@ -20,7 +20,7 @@ namespace MadraCare.Website.Clients
 
         public async Task<string> GetValues()
         {
-            var result = await _httpClient.GetAsync("/api/values");
+            var result = await _httpClient.GetAsync("/kennel");
             if(result.IsSuccessStatusCode)
                 return await result.Content.ReadAsStringAsync();
 

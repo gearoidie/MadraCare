@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace MadraCare.Services.Api
+namespace MadraCare.Services.Gateway
 {
     public class Program
     {
