@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace MadraCare.Services.Website.Gateway
+namespace MadraCare.Services.Api
 {
     public class Startup
     {
