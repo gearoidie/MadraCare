@@ -1,0 +1,20 @@
+version: "3"
+services:
+    services.kennel:
+        build: 
+            context: .
+            dockerfile: ./src/MadraCare.Services/MadraCare.Services.Kennel/Dockerfile
+    services.gateway:
+        build:    
+            context: .
+            dockerfile: ./src/MadraCare.Services/MadraCare.Services.Gateway/Dockerfile
+        depends_on:
+            - services.kennel
+    web:
+        build:    
+            context: .
+            dockerfile: ./src/MadraCare.Website/Dockerfile
+        ports:
+            - "8000:80"
+        depends_on:
+            - services.gateway

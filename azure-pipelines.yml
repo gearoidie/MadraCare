@@ -8,7 +8,49 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  solution: './MadraCare.sln'
+  buildPlatform: 'linux-musl-x64'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.4.1'
+  inputs:
+    versionSpec: 4.4.1
+
+#Your build pipeline references an undefined variable named ‘Parameters.solution’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+steps:
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '$(solution)'
+
+
+#Your build pipeline references an undefined variable named ‘Parameters.solution’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
+variables:
+  BuildPlatform: 'Any CPU'
+steps:
+- task: VSBuild@1
+  displayName: 'Build solution **\*.sln'
+  inputs:
+    solution: '$(solution)'
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+
+#Your build pipeline references an undefined variable named ‘Parameters.azureSubscriptionEndpoint’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘Parameters.azureContainerRegistry’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘Parameters.dockerComposeFile’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+steps:
+- task: DockerCompose@0
+  displayName: 'Build services'
+  inputs:
+    azureSubscription: '$(Parameters.azureSubscriptionEndpoint)'
+    azureContainerRegistry: '$(Parameters.azureContainerRegistry)'
+    dockerComposeFile: '$(Parameters.dockerComposeFile)'
+    additionalDockerComposeFiles: 'docker-compose.ci.yml'
+    dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
+    action: 'Build services'
+    additionalImageTags: '$(Build.BuildId)'
+
+
+
