@@ -11,15 +11,15 @@ namespace MadraCare.Website.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IMadraApiClient _madraApiClient;
+        private readonly IMadraService _madraApiClient;
 
-        public HomeController(IMadraApiClient madraApiClient)
+        public HomeController(IMadraService madraApiClient)
         {
             _madraApiClient = madraApiClient;
         }
         public async Task<IActionResult> Index()
         {
-            ViewData["Message"] = await _madraApiClient.GetValues();
+            ViewData["Message"] = await _madraApiClient.GetKennels();
             return View();
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MadraCare.Services.Gateway.Clients;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MadraCare.Services.Gateway.Controllers
@@ -11,6 +12,12 @@ namespace MadraCare.Services.Gateway.Controllers
     [ApiController]
     public class KennelController : ControllerBase
     {
+        private readonly IMadraKennelService _madraKennelService;
+
+        public KennelController(IMadraKennelService madraKennelService)
+        {
+            _madraKennelService = madraKennelService;
+        }
       
         /// <summary>
         /// Returns all kennels
@@ -29,8 +36,8 @@ namespace MadraCare.Services.Gateway.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            await Task.CompletedTask;
-            return Ok("Test string");
+            var result = await _madraKennelService.GetKennels();
+            return Ok(result);
         }
     }
 }

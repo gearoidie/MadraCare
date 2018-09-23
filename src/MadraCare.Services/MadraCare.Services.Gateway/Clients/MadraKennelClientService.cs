@@ -2,23 +2,23 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace MadraCare.Website.Clients
+namespace MadraCare.Services.Gateway.Clients
 {
 
-    public interface IMadraApiClient
+    public interface IMadraKennelService
     {
-        Task<String> GetValues();
+        Task<String> GetKennels();
     }
     
-    public class MadraApiClient:IMadraApiClient
+    public class MadraKennelServiceClient: IMadraKennelService
     {
         private readonly HttpClient _httpClient;
-        public MadraApiClient(HttpClient httpClient)
+        public MadraKennelServiceClient(HttpClient httpClient)
         {
             _httpClient = httpClient; 
         }
 
-        public async Task<string> GetValues()
+        public async Task<string> GetKennels()
         {
             var result = await _httpClient.GetAsync("/kennel");
             if(result.IsSuccessStatusCode)

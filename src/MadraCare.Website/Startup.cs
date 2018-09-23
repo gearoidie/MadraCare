@@ -32,7 +32,7 @@ namespace MadraCare.Website
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddHttpClient<IMadraApiClient, MadraApiClient>(client =>
+            services.AddHttpClient<IMadraService, MadraGatewayClient>(client =>
             {
                 client.BaseAddress = new Uri("http://services.gateway");
             });
