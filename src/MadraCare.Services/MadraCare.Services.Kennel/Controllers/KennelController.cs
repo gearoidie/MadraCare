@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MadraCare.Models;
 
 namespace MadraCare.Services.Kennel.Controllers
 {
@@ -26,7 +27,9 @@ namespace MadraCare.Services.Kennel.Controllers
         public async Task<IActionResult> Get()
         {
             await Task.CompletedTask;
-            return Ok(new string[] { "value1", "value2" });
+            return Ok(new List<MadraCare.Models.Kennel>(){ new MadraCare.Models.Kennel{
+                Name = "Test Kennel"
+            }});
         }
     }
 }

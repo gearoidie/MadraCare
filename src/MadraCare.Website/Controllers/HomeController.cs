@@ -5,7 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MadraCare.Website.Models;
-using MadraCare.Website.Clients;
+using MadraCare.Clients;
+using MadraCare.Models;
 
 namespace MadraCare.Website.Controllers
 {
@@ -19,7 +20,7 @@ namespace MadraCare.Website.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            ViewData["Message"] = await _madraApiClient.GetKennels();
+            ViewData["Message"] = String.Join(',',(await _madraApiClient.GetKennels()).Select(x=>x.Name));
             return View();
         }
 

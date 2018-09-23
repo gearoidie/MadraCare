@@ -17,4 +17,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\MadraCare.Models\MadraCare.Models.csproj" />
+    <ProjectReference Include="..\..\MadraCare.Clients\MadraCare.Clients.csproj" />
+  </ItemGroup>
+
 </Project>

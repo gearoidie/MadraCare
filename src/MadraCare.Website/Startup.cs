@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MadraCare.Website.Clients;
+using MadraCare.Clients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -36,6 +36,7 @@ namespace MadraCare.Website
             {
                 client.BaseAddress = new Uri("http://services.gateway");
             });
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
        
 

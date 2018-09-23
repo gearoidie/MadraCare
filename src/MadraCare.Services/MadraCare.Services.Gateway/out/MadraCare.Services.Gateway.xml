@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MadraCare.Services.Gateway</name>
+    </assembly>
+    <members>
+        <member name="M:MadraCare.Services.Gateway.Controllers.KennelController.Get">
+             <summary>
+             Returns all kennels
+             </summary>
+             <remarks>
+             Sample request:   
+            
+                 GET /kennels
+            
+             </remarks>
+             <returns>All kennels</returns>
+             <response code="200">Returns the newly created item</response>
+             <response code="500">An error occurred</response>   
+        </member>
+    </members>
+</doc>

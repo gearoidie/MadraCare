@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MadraCare.Services.Gateway.Clients;
+using MadraCare.Clients;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MadraCare.Services.Gateway.Controllers
