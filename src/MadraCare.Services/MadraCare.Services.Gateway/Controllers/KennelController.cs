@@ -30,7 +30,7 @@ namespace MadraCare.Services.Gateway.Controllers
         public async Task<IActionResult> Get()
         {
             await Task.CompletedTask;
-            return Ok();
+            return Ok("Test string");
         }
     }
 }

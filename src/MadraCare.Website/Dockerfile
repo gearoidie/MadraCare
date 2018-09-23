@@ -1,22 +1,16 @@
-FROM microsoft/dotnet:2.1.402-sdk-alpine AS build
+FROM microsoft/dotnet:sdk AS build-env
 WORKDIR /app
 
-# copy csproj and restore as distinct layers
-COPY *.csproj .
+# Copy csproj and restore as distinct layers
+COPY *.csproj ./
 RUN dotnet restore
 
-# copy everything else and build app
-COPY . .
-WORKDIR /app
-RUN dotnet build
- 
-FROM build AS publish
-WORKDIR /app
-# add IL Linker package
-RUN dotnet publish -c Release -o out -r linux-musl-x64
+# Copy everything else and build
+COPY . ./
+RUN dotnet publish -c Release -o out
 
-FROM microsoft/dotnet:2.1.4-runtime-alpine AS runtime
-ENV DOTNET_USE_POLLING_FILE_WATCHER=true
+# Build runtime image
+FROM microsoft/dotnet:aspnetcore-runtime
 WORKDIR /app
-COPY --from=publish /app/out ./
+COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "MadraCare.Website.dll"]
