@@ -4,11 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using MadraCare.Services.Kennel.Store;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -19,7 +21,7 @@ namespace MadraCare.Services.Kennel
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup (IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -27,44 +29,53 @@ namespace MadraCare.Services.Kennel
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices (IServiceCollection services)
         {
- 
+
             //Swagger
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen (c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Kennel API", Version = "v1" });
+                c.SwaggerDoc ("v1", new Info { Title = "Kennel API", Version = "v1" });
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
+                var xmlPath = Path.Combine (AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments (xmlPath);
             });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<KennelDbContext> (options =>
+                options.UseSqlServer (Configuration.GetConnectionString ("KennelDbContext")));
+
+            services.AddTransient<IKennelRepo, KennelRepo>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure (IApplicationBuilder app, IHostingEnvironment env, KennelDbContext kennelDbContext)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment ())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage ();
             }
             else
             {
-                app.UseHsts();
+                app.UseHsts ();
             }
 
-            app.UseHttpsRedirection();
-            app.UseMvc();
-            
-            app.UseSwagger();
+            app.UseHttpsRedirection ();
+            app.UseMvc ();
+
+            app.UseSwagger ();
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
             // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI (c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Modra API V1");
-                
+                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "Modra API V1");
+
             });
+
+            kennelDbContext?.Database?.Migrate();
         }
     }
 }
